@@ -62,12 +62,30 @@ const updateUsers = (req, res) => {
       console.log(err);
       res.status(500).send("Error editing the user");
     })
+};
 
-}
+const deleteUser = (req, res) => {
+  const id = parseInt(req.params.id);
+
+  database
+  .query("DELETE FROM users WHERE id = ?", [id])
+  .then(([result]) => {
+    if (result.affectedRows === 0) {
+      res.sendStatus(404);
+    } else {
+      res.sendStatus(200);
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send("Error delete the user");
+  })
+};
 
 module.exports = {
   getUsers,
   getUserById,  
   postUsers,
   updateUsers,
+  deleteUser,
 }
