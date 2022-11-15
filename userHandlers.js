@@ -1,8 +1,25 @@
 const database = require("./database");
 
 const getUsers = (req, res) => {
+  const { language } = req.query;
+  const { city } = req.query;
+  let sql = "SELECT * FROM users";
+  const sqlValues = [];
+
+  if (language) {
+    sql += " WHERE language = ?";
+    sqlValues.push(language);
+      if (city) {
+        sql += " AND city = ?";
+        sqlValues.push(city);
+      }
+  } else if (city) {
+    sql += " WHERE city = ?";
+    sqlValues.push(city);
+  };
+
   database
-    .query("select * from users")
+    .query(sql, sqlValues)
     .then(([users]) => {
       res.status(200).json(users);
     })
@@ -10,13 +27,14 @@ const getUsers = (req, res) => {
       console.log(err);
       res.status(500).send("Error retrieving data from database");
     });
+
 };
 
-const postUsers = (req, res) => {
-  const { firstname, lastname, email, city, language } = req.body;
+const addUser = (req, res) => {
+  const userData = req.body;
   database
-    .query("INSERT INTO users (firstname, lastname, email, city, language) VALUES (?, ?, ?, ?, ?)", 
-    [firstname, lastname, email, city, language])
+    .query("INSERT INTO users SET ?", 
+    [userData])
     .then(([result]) => {
       res.location(`/api/users/${result.insertId}`).sendStatus(201);
     })
@@ -44,12 +62,12 @@ const getUserById = (req, res) => {
 };
 
 const updateUsers = (req, res) => {
-    const { firstname, lastname, email, city, language } = req.body;
+    const userData = req.body;
     const id = parseInt(req.params.id);
 
     database
-    .query("UPDATE users SET firstname = ?, lastname = ?, email = ?, city = ?, language = ? WHERE id = ?",
-    [firstname, lastname, email, city, language, id]
+    .query("UPDATE users SET ? WHERE id = ?",
+    [userData, id]
     )
     .then(([result]) => {
       if (result.affectedRows === 0) {
@@ -85,7 +103,7 @@ const deleteUser = (req, res) => {
 module.exports = {
   getUsers,
   getUserById,  
-  postUsers,
+  addUser,
   updateUsers,
   deleteUser,
 }

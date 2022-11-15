@@ -18,13 +18,4 @@ database
   console.log(err);
 });
 
-// database
-// .query("select * from movies")
-// .then(([movies]) => {
-//   console.log(movies);
-// })
-// .catch((err) => {
-//   console.log(err)
-// });
-
 module.exports = database;

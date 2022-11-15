@@ -23,7 +23,7 @@ app.put("/api/movies/:id", movieHandlers.putMovies);
 app.delete("/api/movies/:id", movieHandlers.deleteMovie);
 app.get("/api/users", userHandlers.getUsers);
 app.get("/api/users/:id", userHandlers.getUserById);
-app.post("/api/users", userHandlers.postUsers);
+app.post("/api/users", userHandlers.addUser);
 app.put("/api/users/:id", userHandlers.updateUsers);
 app.delete("/api/users/:id", userHandlers.deleteUser);
 
