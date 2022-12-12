@@ -3,7 +3,7 @@ const database = require("./database");
 const getUsers = (req, res) => {
   const { language } = req.query;
   const { city } = req.query;
-  let sql = "SELECT * FROM users";
+  let sql = "SELECT id, firstname, lastname, email, city, language FROM users";
   const sqlValues = [];
 
   if (language) {
