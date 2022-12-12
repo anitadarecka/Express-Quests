@@ -27,7 +27,6 @@ const getUsers = (req, res) => {
       console.log(err);
       res.status(500).send("Error retrieving data from database");
     });
-
 };
 
 const addUser = (req, res) => {
